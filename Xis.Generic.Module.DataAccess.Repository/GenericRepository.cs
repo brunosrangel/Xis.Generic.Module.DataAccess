@@ -10,13 +10,13 @@ namespace Xis.Generic.DataAccess.Repository
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger<GenericRepository<TEntity>> _logger;
 
-
         public GenericRepository(DbContext context, ILogger<GenericRepository<TEntity>> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dbSet = _context.Set<TEntity>();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         public async Task<TEntity?> GetByIdAsync(object id)
         {
             try
@@ -29,10 +29,7 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-
         }
-
-
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
@@ -46,7 +43,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-
         }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
@@ -61,7 +57,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-
         }
 
         public async Task AddAsync(TEntity entity)
@@ -77,7 +72,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-
         }
 
         public async Task UpdateAsync(TEntity entity)
@@ -93,7 +87,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-
         }
 
         public async Task RemoveAsync(object id)
@@ -113,7 +106,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-            
         }
 
         public async Task<IEnumerable<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> filter)
@@ -128,7 +120,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-            
         }
 
         public async Task<TEntity> QuerySingleAsync(Expression<Func<TEntity, bool>> filter)
@@ -143,7 +134,6 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
-            
         }
     }
 }
