@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Xis.Generic.Module.DataAccess.Repository\Xis.Generic.Module.DataAccess.Repository.csproj" />
+    <ProjectReference Include="..\Xis.Generic.Module.DataAccess.Repository\Xis.Generic.DataAccess.Repository.csproj" />
   </ItemGroup>
 
 </Project>

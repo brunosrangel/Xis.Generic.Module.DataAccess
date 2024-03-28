@@ -1,63 +1,149 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
-namespace Xis.Generic.Module.DataAccess.Repository
+namespace Xis.Generic.DataAccess.Repository
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private readonly DbContext _context;
         private readonly DbSet<TEntity> _dbSet;
+        private readonly ILogger<GenericRepository<TEntity>> _logger;
 
-        public GenericRepository(DbContext context)
+
+        public GenericRepository(DbContext context, ILogger<GenericRepository<TEntity>> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dbSet = _context.Set<TEntity>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+        public async Task<TEntity?> GetByIdAsync(object id)
+        {
+            try
+            {
+                return await _dbSet.FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+
         }
 
-        public Task<TEntity> GetByIdAsync(object id)
+
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return _dbSet.FindAsync(id);
+            try
+            {
+                return await Task.FromResult(_dbSet.AsEnumerable());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return Task.FromResult(_dbSet.AsEnumerable());
-        }
+            try
+            {
+                return await Task.FromResult(_dbSet.Where(predicate).AsEnumerable());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
 
-        public Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Task.FromResult(_dbSet.Where(predicate).AsEnumerable());
+                throw;
+            }
+
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+
         }
 
         public async Task RemoveAsync(object id)
         {
-            var entity = await GetByIdAsync(id);
-            if (entity != null)
+            try
             {
-                _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
+                var objEntity = await GetByIdAsync(id);
+                if (objEntity != null)
+                {
+                    _dbSet.Remove(objEntity);
+                    await _context.SaveChangesAsync();
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+            
         }
+
         public async Task<IEnumerable<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> filter)
         {
-            return await _dbSet.Where(filter).ToListAsync();
+            try
+            {
+                return await _dbSet.Where(filter).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+            
         }
 
         public async Task<TEntity> QuerySingleAsync(Expression<Func<TEntity, bool>> filter)
         {
-            return await _dbSet.FirstOrDefaultAsync(filter);
+            try
+            {
+                return await _dbSet.FirstOrDefaultAsync(filter);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro na solicitação");
+
+                throw;
+            }
+            
         }
     }
 }
