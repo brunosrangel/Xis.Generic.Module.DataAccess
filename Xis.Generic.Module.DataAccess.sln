@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xis.Generic.Module.DataAccess.Service", "Xis.Generic.Module.DataAccess\Xis.Generic.Module.DataAccess.Service.csproj", "{4F11E41D-5F72-4CDE-9759-9AF165A83DBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xis.Generic.Module.DataAccess.Repository", "Xis.Generic.Module.DataAccess.Repository\Xis.Generic.Module.DataAccess.Repository.csproj", "{0674142C-37DF-4A7E-9DE1-40FBA0ABEBB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F11E41D-5F72-4CDE-9759-9AF165A83DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F11E41D-5F72-4CDE-9759-9AF165A83DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F11E41D-5F72-4CDE-9759-9AF165A83DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F11E41D-5F72-4CDE-9759-9AF165A83DBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0674142C-37DF-4A7E-9DE1-40FBA0ABEBB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0674142C-37DF-4A7E-9DE1-40FBA0ABEBB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0674142C-37DF-4A7E-9DE1-40FBA0ABEBB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0674142C-37DF-4A7E-9DE1-40FBA0ABEBB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CAE19EAD-DA55-44B0-B4EC-8BC059303FDF}
+	EndGlobalSection
+EndGlobal
