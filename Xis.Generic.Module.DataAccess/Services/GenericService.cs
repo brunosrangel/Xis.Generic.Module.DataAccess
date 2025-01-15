@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
-using Xis.Generic.DataAccess.Repository;
+using Xis.Generic.DataAccess.Repository.Interface;
+using Xis.Generic.DataAccess.Service.Interfaces;
 
-namespace Xis.Generic.DataAccess.Service
+
+namespace Xis.Generic.DataAccess.Service.Services
 {
     public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : class
     {

@@ -1,20 +1,20 @@
 ﻿using System.Linq.Expressions;
 
-namespace Xis.Generic.DataAccess.Repository
+namespace Xis.Generic.DataAccess.Service.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericService<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdAsync(object id);
-
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task AddAsync(TEntity entity);
+        Task<TEntity> GetByIdAsync(object id);
+
+        Task CreateAsync(TEntity entity);
 
         Task UpdateAsync(TEntity entity);
 
-        Task RemoveAsync(object id);
+        Task DeleteAsync(object id);
 
         Task<IEnumerable<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> filter);
 

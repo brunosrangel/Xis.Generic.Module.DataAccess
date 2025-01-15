@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using Xis.Generic.DataAccess.Repository.Interface;
 
 namespace Xis.Generic.DataAccess.Repository
 {
