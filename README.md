@@ -1,35 +1,54 @@
-# Projeto de Serviço e Repositório Genéricos
+# Projeto de Serviços e Repositórios Genéricos
 
-Este projeto consiste em um modelo básico para implementar um serviço e um repositório genéricos em uma aplicação .NET Core 7. O serviço comunica-se com o repositório para realizar operações de consulta e manipulação de dados.
+Este projeto fornece uma estrutura genérica robusta para interagir com diferentes bancos de dados, permitindo que as aplicações utilizem tanto bancos relacionais quanto não relacionais. Ele inclui suporte para **SQL** (via `Entity Framework`) e **MongoDB** (com MongoDB .NET Driver).
 
 ## Funcionalidades
 
-- Implementa um serviço genérico (`GenericService`) que pode ser usado para executar operações de consulta e manipulação em entidades do banco de dados.
-- Implementa um repositório genérico (`GenericRepository`) que fornece métodos para acessar e manipular dados no banco de dados.
-- Os métodos do serviço e do repositório aceitam expressões lambda para consultas flexíveis.
+- **Dois repositórios genéricos principais**:
+  1. **`GenericRepository`**: Implementação voltada para bancos de dados SQL utilizando `Entity Framework`.
+  2. **`GenericRepositoryMongoDb`**: Implementação voltada para bancos de dados MongoDB utilizando o driver nativo.
+  
+- **Dois serviços genéricos correspondentes**:
+  1. **`GenericService`**: Serviço genérico para manipulação de dados usando o `GenericRepository`.
+  2. **`MongoGenericService`**: Serviço genérico para operações com o `GenericRepositoryMongoDb`.
 
-## Como Usar
+- **Operações comuns de repositório e serviço**:
+  - `GetAllAsync()`: Retorna todas as entidades.
+  - `GetByIdAsync(object id)`: Busca uma entidade por ID.
+  - `AddAsync(TEntity entity)`: Adiciona uma nova entidade.
+  - `UpdateAsync(TEntity entity)`: Atualiza uma entidade existente.
+  - `RemoveAsync(object id)`: Remove uma entidade com base no identificador.
+  - **Consultas flexíveis**: Métodos que aceitam expressões Lambda para manipulação dinâmica de dados.
 
-1. Clone ou baixe o repositório para o seu ambiente de desenvolvimento.
-2. Abra o projeto no Visual Studio ou no editor de código de sua preferência.
-3. Personalize o projeto conforme necessário, como adicionando suas próprias entidades, configurações de banco de dados, etc.
-4. Implemente suas próprias lógicas de negócios no serviço, se necessário.
-5. Utilize a injeção de dependência para injetar o serviço e o repositório em outras partes da aplicação, como em controladores ou outros serviços.
-6. Acesse os métodos do serviço para realizar operações de consulta e manipulação no banco de dados.
+## Arquitetura do Projeto
 
-## Implementação
+### Para Bancos de Dados SQL
 
-1. O serviço (`GenericService`) é implementado na camada de serviço do projeto.
-2. O repositório (`GenericRepository`) é implementado na camada de repositório do projeto.
-3. A interface `IGenericService` define os métodos disponíveis para o serviço.
-4. A interface `IGenericRepository` define os métodos disponíveis para o repositório.
-5. Os métodos do serviço e do repositório aceitam expressões lambda como parâmetros para consultas flexíveis.
-6. Os serviços e repositórios personalizados podem ser criados para operações específicas, seguindo o mesmo padrão.
+- **Repositório**: `GenericRepository`
+- **Serviço**: `GenericService`
 
-## Contribuição
+**Configuração**:
+- Configure um `DbContext` com seu banco relacional.
+- Injete os serviços e repositórios genéricos via IoC (Inversão de Controle).
 
-Contribuições são bem-vindas! Se você encontrar um problema, deseja adicionar uma nova funcionalidade ou melhorar o projeto de alguma forma, sinta-se à vontade para abrir uma issue ou enviar um pull request.
+### Para Bancos de Dados MongoDB
 
-## Licença
+- **Repositório**: `GenericRepositoryMongoDb`
+- **Serviço**: `MongoGenericService`
 
-Este projeto é licenciado sob a [MIT License](LICENSE).
+**Configuração**:
+- Configure a conexão com o banco MongoDB usando o cliente MongoDB.
+- Injete os serviços e repositórios genéricos específicos via IoC.
+
+## Exemplos de Configuração
+
+### Para Bancos de Dados SQL
+
+Adicione a configuração no `Program.cs`:
+
+```csharp
+builder.Services.AddDbContext<YourDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
