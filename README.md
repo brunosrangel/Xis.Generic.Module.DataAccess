@@ -1,3 +1,4 @@
+
 # Projeto de Serviços e Repositórios Genéricos
 
 Este projeto fornece uma estrutura genérica robusta para interagir com diferentes bancos de dados, permitindo que as aplicações utilizem tanto bancos relacionais quanto não relacionais. Ele inclui suporte para **SQL** (via `Entity Framework`) e **MongoDB** (com MongoDB .NET Driver).
@@ -52,3 +53,75 @@ builder.Services.AddDbContext<YourDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+```
+
+### Para Bancos de Dados MongoDB
+
+Adicione a configuração no `Program.cs`:
+
+```csharp
+builder.Services.AddScoped<IMongoDatabase>(sp =>
+{
+    var client = new MongoClient(configuration["MongoSettings:ConnectionString"]);
+    return client.GetDatabase(configuration["MongoSettings:Database"]);
+});
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryMongoDb<>));
+builder.Services.AddScoped(typeof(IMongoGenericService<>), typeof(MongoGenericService<>));
+```
+
+### Uso nos Controladores
+
+#### SQL:
+
+```csharp
+public class YourController : ControllerBase
+{
+    private readonly IGenericService<YourEntity> _service;
+
+    public YourController(IGenericService<YourEntity> service)
+    {
+        _service = service;
+    }
+    
+    public async Task<IActionResult> GetAll()
+    {
+        var entities = await _service.GetAllAsync();
+        return Ok(entities);
+    }
+}
+```
+
+#### MongoDB:
+
+```csharp
+public class YourController : ControllerBase
+{
+    private readonly IMongoGenericService<YourEntity> _service;
+
+    public YourController(IMongoGenericService<YourEntity> service)
+    {
+        _service = service;
+    }
+    
+    public async Task<IActionResult> GetAll()
+    {
+        var entities = await _service.GetAllAsync();
+        return Ok(entities);
+    }
+}
+```
+
+## Principais Diferenciais
+
+- **Segregação clara**: A separação das implementações para SQL e MongoDB evita complexidades desnecessárias e garante um código coeso e especializado.
+- **Reuso máximo de código**: Interfaces genéricas permitem o reuso das implementações padrão entre projetos.
+- **Extensibilidade**: Adapte facilmente o comportamento padrão implementando novos métodos ou substituindo os existentes em serviços ou repositórios personalizados.
+
+## Contribuições
+
+Se você tiver sugestões, novas ideias ou melhorias, fique à vontade para abrir uma issue ou enviar um pull request.
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
