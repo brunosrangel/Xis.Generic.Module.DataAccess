@@ -7,15 +7,14 @@ namespace Xis.Generic.DataAccess.Service.Services
 {
     public class MongoGenericService<TEntity> : IMongoGenericService<TEntity> where TEntity : class
     {
-        private readonly IGenericRepository<TEntity> _repository;
+        private readonly IGenericRepositoryMongoDb<TEntity> _repository;
         private readonly ILogger<MongoGenericService<TEntity>> _logger;
 
-        public MongoGenericService(IGenericRepository<TEntity> repository, ILogger<MongoGenericService<TEntity>> logger)
+        public MongoGenericService(IGenericRepositoryMongoDb<TEntity> repository, ILogger<MongoGenericService<TEntity>> logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await ExecuteWithLoggingAsync(
             () => _repository.GetAllAsync(), nameof(GetAllAsync));
 

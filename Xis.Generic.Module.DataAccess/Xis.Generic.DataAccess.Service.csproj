@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>Xis.Generic.DataAccess</PackageId>
-	  <Version>2.0.1</Version>
+	  <Version>2.0.2</Version>
 	  <Authors>Bruno Rangel</Authors>
 	  <Description>Inclusão do Repositorio para conexão ao MongoDB. Correção de Bugs</Description>
 	  <Copyright>Copyright © 2025</Copyright>

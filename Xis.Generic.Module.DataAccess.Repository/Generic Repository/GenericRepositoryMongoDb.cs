@@ -5,17 +5,17 @@ using Xis.Generic.DataAccess.Repository.Interface;
 
 namespace Xis.Generic.DataAccess.Repository
 {
-    public class GenericRepositoryMongoDb<TEntity> : IGenericRepositoryMongoDb<TEntity> where TEntity : class
+    public class GenericRepositoryMongoDb<TEntity> : IGenericRepositoryMongoDb<TEntity>
+    where TEntity : class
+
     {
         private readonly IMongoCollection<TEntity> _collection;
         private readonly ILogger<GenericRepositoryMongoDb<TEntity>> _logger;
-
         public GenericRepositoryMongoDb(IMongoCollection<TEntity> collection, ILogger<GenericRepositoryMongoDb<TEntity>> logger)
         {
-            _collection = collection;
-            _logger = logger;
+            _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
         public async Task<TEntity?> GetByIdAsync(object id)
         {
             try
@@ -60,13 +60,15 @@ namespace Xis.Generic.DataAccess.Repository
 
         public async Task AddAsync(TEntity entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             try
             {
                 await _collection.InsertOneAsync(entity);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro na solicitação");
+                _logger.LogError(ex, "Erro ao inserir entidade no MongoDB.");
                 throw;
             }
         }

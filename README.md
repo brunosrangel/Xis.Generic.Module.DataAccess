@@ -60,15 +60,58 @@ builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 Adicione a configuração no `Program.cs`:
 
 ```csharp
-builder.Services.AddScoped<IMongoDatabase>(sp =>
+var _mongoDbConfing = new MongoDBConfig
 {
-    var client = new MongoClient(configuration["MongoSettings:ConnectionString"]);
-    return client.GetDatabase(configuration["MongoSettings:Database"]);
+    ConnectionString = config["ConnectionStrings:MongoDb"],
+    DataBaseName = config["ConnectionStrings:DataBaseName"]
+};
+builder.Services.AddScoped<MongoDbContext>(sp =>
+{
+    var client = new MongoClient(_mongoDbConfing.ConnectionString);
+    var database = client.GetDatabase(_mongoDbConfing.DataBaseName);
+    return new MongoDbContext(database); // O MongoDbContext já tem as coleções configuradas
 });
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositoryMongoDb<>));
+// Registra as coleções dinamicamente no DI usando reflexão
+var context = builder.Services.BuildServiceProvider().GetRequiredService<MongoDbContext>();
+
+var properties = typeof(MongoDbContext)
+    .GetProperties()
+    .Where(p => p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(IMongoCollection<>))
+    .ToList();
+
+// Registra as coleções no DI
+foreach (var property in properties)
+{
+    var collectionType = property.PropertyType.GenericTypeArguments[0]; // Obtém o tipo genérico de IMongoCollection<T>
+    var collectionServiceType = typeof(IMongoCollection<>).MakeGenericType(collectionType); // Cria o tipo de IMongoCollection<T>
+
+    // Registra a coleção no DI
+    builder.Services.AddScoped(collectionServiceType, sp =>
+    {
+        return property.GetValue(sp.GetRequiredService<MongoDbContext>());
+    });
+}
+
+
+// Registra repositórios e serviços genéricos
+builder.Services.AddScoped(typeof(IGenericRepositoryMongoDb<>), typeof(GenericRepositoryMongoDb<>));
 builder.Services.AddScoped(typeof(IMongoGenericService<>), typeof(MongoGenericService<>));
+
 ```
+
+Crie o Arquivo dbcontex do Mongo `MongoDbContext.cs`:
+```csharp
+public class MongoDbContext
+    {
+        private readonly IMongoDatabase _database;
+        public MongoDbContext(IMongoDatabase database)
+        {
+            _database = database ?? throw new ArgumentNullException(nameof(database));
+        }
+
+        public IMongoCollection<Usuario> Usuarios => _database.GetCollection<Usuario>("Usuarios");
+        ```
 
 ### Uso nos Controladores
 
