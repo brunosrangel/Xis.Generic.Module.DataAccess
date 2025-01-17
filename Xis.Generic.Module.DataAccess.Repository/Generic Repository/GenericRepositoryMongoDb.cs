@@ -5,16 +5,17 @@ using Xis.Generic.DataAccess.Repository.Interface;
 
 namespace Xis.Generic.DataAccess.Repository
 {
-    public class GenericRepositoryMongoDb<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepositoryMongoDb<TEntity> : IGenericRepositoryMongoDb<TEntity> where TEntity : class
     {
         private readonly IMongoCollection<TEntity> _collection;
         private readonly ILogger<GenericRepositoryMongoDb<TEntity>> _logger;
 
-        public GenericRepositoryMongoDb(IMongoDbContext context, ILogger<GenericRepositoryMongoDb<TEntity>> logger)
+        public GenericRepositoryMongoDb(IMongoCollection<TEntity> collection, ILogger<GenericRepositoryMongoDb<TEntity>> logger)
         {
-            _collection = context.GetCollection<TEntity>();
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _collection = collection;
+            _logger = logger;
         }
+
         public async Task<TEntity?> GetByIdAsync(object id)
         {
             try

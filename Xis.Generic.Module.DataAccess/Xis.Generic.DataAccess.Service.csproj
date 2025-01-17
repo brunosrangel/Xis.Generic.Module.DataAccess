@@ -4,7 +4,25 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageId>Xis.Generic.DataAccess</PackageId>
+	  <Version>2.0.1</Version>
+	  <Authors>Bruno Rangel</Authors>
+	  <Description>Inclusão do Repositorio para conexão ao MongoDB. Correção de Bugs</Description>
+	  <Copyright>Copyright © 2025</Copyright>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <RepositoryUrl>https://github.com/brunosrangel/Xis.Generic.Module.DataAccess</RepositoryUrl>
+	  <PackageTags>generic;repository;mongo;sql; dotnet core;dotnet;core</PackageTags>
+	  <AssemblyVersion>2.0.0.0</AssemblyVersion>
+	  <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Link="README.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Xis.Generic.Module.DataAccess.Repository\Xis.Generic.DataAccess.Repository.csproj" />
