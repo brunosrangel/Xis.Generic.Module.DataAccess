@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Xis.Generic.DataAccess.Repository.Interface;
 
-namespace Xis.Generic.DataAccess.Repository
+namespace Xis.Generic.DataAccess.Repository.Repository
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
@@ -135,6 +136,46 @@ namespace Xis.Generic.DataAccess.Repository
 
                 throw;
             }
+        }
+
+        Task<TEntity> IGenericRepository<TEntity>.GetByIdAsync(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<TEntity>> IGenericRepository<TEntity>.GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<TEntity>> IGenericRepository<TEntity>.FindAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IGenericRepository<TEntity>.AddAsync(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IGenericRepository<TEntity>.UpdateAsync(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IGenericRepository<TEntity>.RemoveAsync(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<TEntity>> IGenericRepository<TEntity>.QueryAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<TEntity> IGenericRepository<TEntity>.QuerySingleAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

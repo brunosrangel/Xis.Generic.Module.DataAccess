@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using System.Linq.Expressions;
 using Xis.Generic.DataAccess.Repository.Interface;
 
-namespace Xis.Generic.DataAccess.Repository
+namespace Xis.Generic.DataAccess.Repository.Repository
 {
     public class GenericRepositoryMongoDb<TEntity> : IGenericRepositoryMongoDb<TEntity>
     where TEntity : class
