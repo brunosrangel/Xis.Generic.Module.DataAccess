@@ -15,8 +15,7 @@
 	  <PackageTags>generic;repository;mongo;sql; dotnet core;dotnet;core</PackageTags>
 	  <AssemblyVersion>2.0.0.0</AssemblyVersion>
 	  <FileVersion>2.0.0.0</FileVersion>
-	  <None Include="README.md" Pack="true" PackagePath="/" />
-
+	  
   </PropertyGroup>
 
   <ItemGroup>
